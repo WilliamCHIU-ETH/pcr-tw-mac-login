@@ -28,11 +28,11 @@
 ```mermaid
 flowchart TB
     subgraph AIR["BlueStacks Air（同一份 Android 使用者資料）"]
-        A["先：原始映像<br/>開遊戲，完成官方引繼"]
         B["後：root 映像<br/>不開遊戲，只讀檔"]
+        A["先：原始映像<br/>開遊戲，完成官方引繼"]
         P[("playerprefs.xml<br/>UDID · SHORT_UDID<br/>VIEWER_ID · TW_SERVER_ID")]
-        A -->|"引繼後寫入"| P
         B -->|"Shell root 讀取"| P
+        A -->|"引繼後寫入"| P
     end
     subgraph MAC["Mac"]
         C["Python 客戶端<br/>解碼識別資料，重現遊戲通訊格式"]

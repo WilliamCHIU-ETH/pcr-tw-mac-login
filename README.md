@@ -117,14 +117,17 @@ sequenceDiagram
     Note over U,A: Step 1：原始映像
     U->>A: 開遊戲，輸入引繼資訊
     A->>S: 官方引繼
-    S-->>A: 引繼成功，寫入 playerprefs.xml
-    U->>A: 取消 12.59 GB 追加下載，關閉 Air
+    S-->>A: 引繼成功
+    A->>A: 寫入 playerprefs.xml
+    U->>A: 取消追加下載，關閉 Air
     Note over U,A: Step 2：root 映像（不開遊戲）
-    U->>A: 換映像後啟動，開啟 ADB 與 Shell root
-    M->>A: 經 ADB 以 root 讀取 playerprefs.xml
-    A-->>M: XML 內容（只留在記憶體）
-    M->>M: 解碼出四個識別值
-    M->>S: 依序呼叫 check_agreement、game_start、load/index
+    U->>A: 開啟 ADB 與 root
+    M->>A: 經 ADB 讀設定檔
+    A-->>M: XML（只留在記憶體）
+    M->>M: 解碼四個識別值
+    M->>S: check_agreement
+    M->>S: game_start
+    M->>S: load/index
     S-->>M: 帳號資料（含角色池）
 ```
 

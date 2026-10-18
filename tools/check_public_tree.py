@@ -5,7 +5,7 @@ import re
 import sys
 
 EXPECTED = {
-    '.gitignore', 'README.md',
+    '.gitignore', 'LICENSE', 'README.md',
     'docs/architecture.md', 'docs/experiment.md', 'docs/licensing.md',
     'docs/publication.md', 'docs/upstream-license-audit.json', 'docs/code-provenance.md',
     'examples/roster.synthetic.json', 'tools/check_public_tree.py',

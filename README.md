@@ -13,6 +13,7 @@
 ![Region TW](https://img.shields.io/badge/Region-TW-2563eb)
 ![Docs only](https://img.shields.io/badge/Content-Docs_only-2563eb)
 ![Experimental](https://img.shields.io/badge/Status-Experimental-d97706)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-2563eb)](LICENSE)
 
 **[運作原理](#運作原理)** · **[完整流程](#完整流程)** · **[實測環境](#實測環境)** · **[致謝](#致謝)**
 
@@ -166,4 +167,5 @@ BlueStacks Air 的 root 映像
 ---
 
 <sub>實驗與審查紀錄：[方法與實驗結果](docs/experiment.md) · [上游授權與檔案判定](docs/licensing.md) · [程式來源分析](docs/code-provenance.md) · [公開範圍](docs/publication.md)</sub><br/>
+<sub>本 repo 的文件、圖表、合成範例與檢查腳本以 [Apache License 2.0](LICENSE) 授權；不涵蓋上游專案的程式碼。</sub><br/>
 <sub>非官方實驗專案，與遊戲開發商、營運商及 BlueStacks 無隸屬關係。</sub>

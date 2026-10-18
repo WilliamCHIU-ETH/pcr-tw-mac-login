@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "region": "TW",
+  "exported_at": null,
+  "source_app_version": "5.9.0",
+  "units": [
+    {
+      "id": 100101,
+      "name": null,
+      "unit_rarity": 3,
+      "battle_rarity": 3,
+      "unit_level": 100,
+      "promotion_level": 15,
+      "exceed_stage": 0,
+      "unique_equip_slot": []
+    }
+  ],
+  "verification": {
+    "live_api_tested": false,
+    "name_mapping": "not_added",
+    "unique_equip_display_semantics": "raw_fields_only",
+    "synthetic_example": true
+  }
+}

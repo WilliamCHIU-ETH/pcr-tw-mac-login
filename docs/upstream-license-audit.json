@@ -1,0 +1,37 @@
+[
+  {
+    "repo": "SonderXiaoming/kanna_connection_redive_2",
+    "commit": "35723baae36f63edf6b20852bc8e56307d44d505",
+    "current_api_license": null,
+    "license_paths_at_commit": [],
+    "tree_truncated": false,
+    "manifest_readme_files_checked": [
+      "readme.md"
+    ],
+    "license_mentions": []
+  },
+  {
+    "repo": "SonderXiaoming/pcr_login_helper",
+    "commit": "d1e6b1691a4da49cc2c9c5c20944cc4042cf4ddb",
+    "current_api_license": null,
+    "license_paths_at_commit": [],
+    "tree_truncated": false,
+    "manifest_readme_files_checked": [
+      "README.md",
+      "package.json",
+      "src-tauri/Cargo.toml"
+    ],
+    "license_mentions": []
+  },
+  {
+    "repo": "hanreev/root-bluestacks-air",
+    "commit": "9056f43fef6f2c0a6d3577cbd061fa6ff5f8ac50",
+    "current_api_license": null,
+    "license_paths_at_commit": [],
+    "tree_truncated": false,
+    "manifest_readme_files_checked": [
+      "README.md"
+    ],
+    "license_mentions": []
+  }
+]

@@ -161,8 +161,6 @@ PlayerPrefs 欄位解碼與 ID 組合
 **[root-bluestacks-air](https://github.com/hanreev/root-bluestacks-air)** · hanreev<br/>
 BlueStacks Air 的 root 映像
 
-<sub>README 排版參考 [magpie](https://github.com/yetone/magpie)</sub>
-
 </div>
 
 ---

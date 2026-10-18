@@ -1,4 +1,4 @@
-"""Check this documentation-only publication candidate. No network or device I/O."""
+"""Check the public tree of this documentation-only repo. No network or device I/O."""
 from pathlib import Path
 import json
 import hashlib

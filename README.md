@@ -37,7 +37,7 @@
 ## 如何運作
 
 ```mermaid
-flowchart TD
+flowchart LR
     A["在 BlueStacks Air 完成官方帳號引繼"]
     B["遊戲將登入識別資料<br/>寫入 Android 私有設定檔"]
     C["Mac 工具讀取並解碼<br/>取得 API 客戶端需要的識別資料"]

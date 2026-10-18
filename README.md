@@ -14,7 +14,7 @@
 ![Docs only](https://img.shields.io/badge/Content-Docs_only-2563eb)
 ![Experimental](https://img.shields.io/badge/Status-Experimental-d97706)
 
-**[運作原理](#運作原理)** · **[實測環境](#實測環境)** · **[延伸閱讀](#延伸閱讀)**
+**[運作原理](#運作原理)** · **[完整流程](#完整流程)** · **[實測環境](#實測環境)** · **[致謝](#致謝)**
 
 </div>
 
@@ -103,6 +103,33 @@ flowchart TB
 
 </details>
 
+## 完整流程
+
+運作原理講資料怎麼流，這張泳道圖依時間順序列出每一步。
+
+```mermaid
+sequenceDiagram
+    actor U as 你
+    participant A as BlueStacks Air
+    participant M as Mac 客戶端
+    participant S as 官方伺服器
+
+    Note over U,A: Step 1：原始映像
+    U->>A: 開遊戲，輸入引繼資訊
+    A->>S: 官方引繼
+    S-->>A: 引繼成功，寫入 playerprefs.xml
+    U->>A: 取消 12.59 GB 追加下載，關閉 Air
+    Note over U,A: Step 2：root 映像（不開遊戲）
+    U->>A: 換映像後啟動，開啟 ADB 與 Shell root
+    M->>A: 經 ADB 以 root 讀取 playerprefs.xml
+    A-->>M: XML 內容（只留在記憶體）
+    M->>M: 解碼出四個識別值
+    M->>S: 依序呼叫 check_agreement、game_start、load/index
+    S-->>M: 帳號資料（含角色池）
+```
+
+每個函數如何分工、封包怎麼組成，見[完整泳道圖與函數說明](docs/architecture.md)。
+
 ## 實測環境
 
 | 項目 | 本次實測 |
@@ -116,16 +143,26 @@ flowchart TB
 
 這是單一環境、單一帳號的成功紀錄，版本邊界與未驗證項目見[方法與實驗結果](docs/experiment.md)。
 
-## 延伸閱讀
+## 致謝
 
-| 文件 | 內容 |
-| :--- | :--- |
-| [方法與實驗結果](docs/experiment.md) | 完整操作步驟、成功證據與限制 |
-| [泳道圖與函數說明](docs/architecture.md) | 引繼、取檔、解碼、登入與匯出的資料流 |
-| [上游授權與檔案判定](docs/licensing.md) | 為什麼不附程式碼 |
-| [程式來源分析](docs/code-provenance.md) | 逐函數來源對照 |
-| [公開範圍](docs/publication.md) | 私人資料隔離與公開條件 |
+<div align="center">
 
-本專案參考：[pcr_login_helper](https://github.com/SonderXiaoming/pcr_login_helper)（欄位解碼）、[kanna_connection_redive_2](https://github.com/SonderXiaoming/kanna_connection_redive_2)（台版客戶端與協定）、[root-bluestacks-air](https://github.com/hanreev/root-bluestacks-air)（root 映像）、[magpie](https://github.com/yetone/magpie)（README 排版）。
+這個實驗建立在以下開源專案之上
 
-非官方實驗專案，與遊戲開發商、營運商及 BlueStacks 無隸屬關係。
+**[pcr_login_helper](https://github.com/SonderXiaoming/pcr_login_helper)** · SonderXiaoming<br/>
+PlayerPrefs 欄位解碼與 ID 組合
+
+**[kanna_connection_redive_2](https://github.com/SonderXiaoming/kanna_connection_redive_2)** · SonderXiaoming<br/>
+台版客戶端與通訊協定
+
+**[root-bluestacks-air](https://github.com/hanreev/root-bluestacks-air)** · hanreev<br/>
+BlueStacks Air 的 root 映像
+
+<sub>README 排版參考 [magpie](https://github.com/yetone/magpie)</sub>
+
+</div>
+
+---
+
+<sub>實驗與審查紀錄：[方法與實驗結果](docs/experiment.md) · [上游授權與檔案判定](docs/licensing.md) · [程式來源分析](docs/code-provenance.md) · [公開範圍](docs/publication.md)</sub><br/>
+<sub>非官方實驗專案，與遊戲開發商、營運商及 BlueStacks 無隸屬關係。</sub>

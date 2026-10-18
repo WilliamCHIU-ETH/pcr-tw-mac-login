@@ -33,7 +33,7 @@
 | 同檔：`headers`，31–37 | **執行時用 AST 直接擷取上游 `tw_headers` 字典** | 覆寫實測 App／Unity 版本、移除 Expect | 這是明確原碼依賴，不只是口頭參考；不能刪掉 reference 後宣稱工具可運作 |
 | 同檔：`run`，39–83 | 登入順序、路由與回應欄位依 KCRR；呼叫衍生封裝／解碼器 | 標準庫 HTTPS、TLS 驗證、無重試、容量上限、identity 不變檢查、角色白名單、JSON schema 與摘要是新增 | 可以拆出 transport／roster projection，但整個 run 不是獨立無依賴程式 |
 | `test_offline.py`：`reference_classes`、差異測試 | 從上游快照抽 AST，再執行加解密方法比較 | 測試編排與合成案例是本次撰寫 | 測試程式不等於全部抄寫，但現有套件仍需 reference；發布時需處理來源，或另寫不依賴原碼的測試 |
-| `tools/check_public_tree.py` | 沒有遊戲解碼／通訊功能，也不 import 私有原型 | 白名單、路徑／秘密樣式、連結、合成範例檢查 | 已納入公開候選 |
+| `tools/check_public_tree.py` | 沒有遊戲解碼／通訊功能，也不 import 私有原型 | 白名單、路徑／秘密樣式、連結、合成範例檢查 | 已納入本 repo |
 
 ## 最小可行的公開方案
 
@@ -43,7 +43,7 @@
 
 若上游不回覆，再評估明確授權的相容替代實作。不可把「改語言、改變數、補 credit」當成許可，也不能在已讀取來源後把普通重寫稱為已完成 clean-room。GitHub 的[授權說明](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository)明確區分公開存取與授權。
 
-root 工具是另一個邊界：目前公開候選只連結 root-bluestacks-air，不含其 script、APK 或映像。若未來要打包該工具，需另外處理其來源與授權；不必為分享自己的匯出器先把整套 root 工具收進 repo。
+root 工具是另一個邊界：目前本 repo 只連結 root-bluestacks-air，不含其 script、APK 或映像。若未來要打包該工具，需另外處理其來源與授權；不必為分享自己的匯出器先把整套 root 工具收進 repo。
 
 ## 查核快照
 

@@ -27,30 +27,31 @@
 
 ```mermaid
 flowchart LR
-    subgraph S1["① 為什麼要切換映像"]
-        A["原始映像<br/>開遊戲、完成官方引繼"]
-        B["root 映像（此環境遊戲會黑屏）<br/>不開遊戲，只讀設定檔"]
-        A -->|"關閉 Air，換映像<br/>使用者資料不變"| B
+    subgraph AIR["BlueStacks Air（同一份 Android 使用者資料）"]
+        A["原始映像<br/>開遊戲，完成官方引繼"]
+        B["root 映像<br/>不開遊戲"]
+        P[("playerprefs.xml<br/>UDID · SHORT_UDID<br/>VIEWER_ID · TW_SERVER_ID")]
+        A -->|"引繼後寫入"| P
+        A -.->|"關閉 Air，換映像"| B
+        B -->|"Shell root 讀取"| P
     end
-    subgraph S2["② 登入資料是什麼"]
-        C["遊戲私有設定檔<br/>playerprefs.xml"]
-        D["UDID · SHORT_UDID<br/>VIEWER_ID · TW_SERVER_ID"]
-        C -->|"解碼"| D
+    subgraph MAC["Mac"]
+        C["Python 客戶端<br/>解碼識別資料<br/>重現遊戲通訊格式"]
     end
-    subgraph S3["③ 它能做什麼"]
-        E["Mac 客戶端登入官方 API"]
-        F["讀取角色池<br/>（本次已驗證）"]
-        G["其他帳號資料<br/>（可自行延伸）"]
-        E --> F
-        E -.-> G
+    subgraph SRV["官方伺服器"]
+        F["角色池<br/>（本次已驗證）"]
+        G["其他帳號資料<br/>（未驗證）"]
     end
-    B -->|"ADB + root 讀檔"| C
-    D -->|"加上遊戲通訊格式"| E
+    P -->|"ADB"| C
+    C -->|"登入後呼叫 API"| F
+    C -.-> G
 ```
 
-1. **為什麼要切換映像**：原始映像負責登入，root 映像負責讀檔，兩者共用同一份 Android 使用者資料。不必在 root 下開遊戲，也不必先下載 12.59 GB 的追加素材。
-2. **登入資料是什麼**：遊戲自己的登入識別資料，不是 Apple／Facebook 帳密。**但拿到它就能登入這個帳號，不要提交到 GitHub，也不要交給任何人。**
-3. **它能做什麼**：本次用它完成登入並讀取 90 位角色的資料；其他 API 理論上可走同一個登入流程，尚未驗證。
+對照上圖：
+
+- **為什麼要切換映像**：此環境在 root 映像下開遊戲會黑屏，所以讓原始映像負責引繼、root 映像只負責讀檔。兩者共用同一份使用者資料，也不必先下載 12.59 GB 的追加素材。
+- **登入資料是什麼**：就是 `playerprefs.xml` 裡那四個遊戲識別值，不是 Apple／Facebook 帳密。**但拿到它就能登入這個帳號，不要提交到 GitHub，也不要交給任何人。**
+- **它能做什麼**：Mac 客戶端用它登入後，就能呼叫遊戲 API。本次讀取了 90 位角色；其他 API 可走同一個登入流程，尚未驗證。
 
 <details>
 <summary><strong>四個欄位各是什麼</strong></summary>

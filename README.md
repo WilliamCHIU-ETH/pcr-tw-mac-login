@@ -28,28 +28,30 @@
 ```mermaid
 flowchart TB
     subgraph AIR["BlueStacks Air（同一份 Android 使用者資料）"]
-        B["Step 2：root 映像<br/>不開遊戲，只讀檔"]
+        B["Step 2：root 映像<br/>不開遊戲，只提供 root"]
         A["Step 1：原始映像<br/>開遊戲，完成官方引繼"]
-        P[("playerprefs.xml<br/>UDID · SHORT_UDID<br/>VIEWER_ID · TW_SERVER_ID")]
-        B -->|"Shell root 讀取"| P
+        P[("playerprefs.xml<br/>遊戲的私有設定檔")]
+        B -.->|"root 讓私有檔可被讀取"| P
         A -->|"引繼後寫入"| P
     end
-    subgraph MAC["Mac"]
-        C["Python 客戶端<br/>解碼識別資料，重現遊戲通訊格式"]
+    subgraph MAC["Mac：Python 客戶端（資料只留在記憶體）"]
+        D["讀檔並解碼<br/>UDID · SHORT_UDID<br/>VIEWER_ID · TW_SERVER_ID"]
+        C["重現遊戲通訊格式<br/>登入官方 API"]
+        D --> C
     end
     subgraph SRV["官方伺服器"]
         F["角色池<br/>（本次已驗證）"]
         G["其他帳號資料<br/>（未驗證）"]
     end
-    P -->|"ADB"| C
-    C -->|"登入後呼叫 API"| F
+    P -->|"經 ADB 通道拉回 Mac"| D
+    C -->|"呼叫 API"| F
     C -.-> G
 ```
 
 對照上圖：
 
 - **為什麼要切換映像**：此環境在 root 映像下開遊戲會黑屏，所以讓原始映像負責引繼、root 映像只負責讀檔。兩者共用同一份使用者資料，也不必先下載 12.59 GB 的追加素材。
-- **登入資料是什麼**：就是 `playerprefs.xml` 裡那四個遊戲識別值，不是 Apple／Facebook 帳密。**但拿到它就能登入這個帳號，不要提交到 GitHub，也不要交給任何人。**
+- **登入資料是什麼**：從 `playerprefs.xml` 解碼出的四個遊戲識別值，不是 Apple／Facebook 帳密。**但拿到它就能登入這個帳號，不要提交到 GitHub，也不要交給任何人。**
 - **它能做什麼**：Mac 客戶端用它登入後，就能呼叫遊戲 API。本次讀取了 90 位角色；其他 API 可走同一個登入流程，尚未驗證。
 
 <details>

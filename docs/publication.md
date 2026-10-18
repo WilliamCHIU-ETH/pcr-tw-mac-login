@@ -24,3 +24,7 @@ python3 tools/check_public_tree.py
 - 發布操作不需要登入遊戲、存取憑證或改動 ADB／root。
 
 本次沒有聯絡上游作者。GitHub 的實際提交與公開狀態以遠端倉庫為準。
+
+## 分享封面
+
+新增 `assets/social-preview.jpg` 與素材說明，並由 README 引用。封面以 SHA-256 固定核對已確認版本，不對二進位圖片執行文字秘密掃描；通過不代表圖片的授權判定。角色二創封面不納入 Apache-2.0 授權範圍，詳見[封面說明](../assets/README.md)。

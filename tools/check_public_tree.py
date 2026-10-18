@@ -1,15 +1,19 @@
 """Check this documentation-only publication candidate. No network or device I/O."""
 from pathlib import Path
 import json
+import hashlib
 import re
 import sys
 
 EXPECTED = {
     '.gitignore', 'LICENSE', 'README.md',
+    'assets/README.md', 'assets/social-preview.jpg',
     'docs/architecture.md', 'docs/experiment.md', 'docs/licensing.md',
     'docs/publication.md', 'docs/upstream-license-audit.json', 'docs/code-provenance.md',
     'examples/roster.synthetic.json', 'tools/check_public_tree.py',
 }
+BINARY_SHA256 = {'assets/social-preview.jpg': '0cb4d776ec1e1de34d9fe30cca20a8718254c80e390e09fbf8b5a0d66412310b'}
+
 PATTERNS = {
     'personal_absolute_path': re.compile('/' + r'(?:Users|home)/[^\s/]+/'),
     'private_key': re.compile('-----BEGIN ' + r'(?:RSA |EC |OPENSSH )?PRIVATE KEY-----'),
@@ -33,6 +37,10 @@ def inspect(root):
         actual.add(name)
         if name not in EXPECTED:
             errors.append(f'not allowlisted: {name}')
+            continue
+        if name in BINARY_SHA256:
+            if hashlib.sha256(path.read_bytes()).hexdigest() != BINARY_SHA256[name]:
+                errors.append(f'unreviewed binary: {name}')
             continue
         try:
             text = path.read_text(encoding='utf-8')

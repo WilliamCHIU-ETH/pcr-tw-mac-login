@@ -2,6 +2,10 @@
 
 # pcr-tw-mac-login
 
+![角色池匯出範例：三位角色整理名冊並匯出 JSON](assets/social-preview.jpg)
+
+<sub>角色池匯出範例主視覺 · 非官方 AI 輔助二創，素材說明見 [封面說明](assets/README.md)。</sub>
+
 ### 在 Mac 上取得台版公主連結的登入資料
 
 **在 Apple Silicon Mac 上，透過 BlueStacks Air 取出台版《超異域公主連結☆Re:Dive》的登入資料，並用它從 Mac 登入官方 API。**

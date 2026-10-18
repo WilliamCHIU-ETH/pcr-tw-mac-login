@@ -26,17 +26,16 @@
 ## 運作原理
 
 ```mermaid
-flowchart LR
+flowchart TB
     subgraph AIR["BlueStacks Air（同一份 Android 使用者資料）"]
-        A["原始映像<br/>開遊戲，完成官方引繼"]
-        B["root 映像<br/>不開遊戲"]
+        A["先：原始映像<br/>開遊戲，完成官方引繼"]
+        B["後：root 映像<br/>不開遊戲，只讀檔"]
         P[("playerprefs.xml<br/>UDID · SHORT_UDID<br/>VIEWER_ID · TW_SERVER_ID")]
         A -->|"引繼後寫入"| P
-        A -.->|"關閉 Air，換映像"| B
         B -->|"Shell root 讀取"| P
     end
     subgraph MAC["Mac"]
-        C["Python 客戶端<br/>解碼識別資料<br/>重現遊戲通訊格式"]
+        C["Python 客戶端<br/>解碼識別資料，重現遊戲通訊格式"]
     end
     subgraph SRV["官方伺服器"]
         F["角色池<br/>（本次已驗證）"]

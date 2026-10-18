@@ -26,7 +26,7 @@
 ## 運作原理
 
 ```mermaid
-flowchart TB
+flowchart LR
     subgraph S1["① 為什麼要切換映像"]
         A["原始映像<br/>開遊戲、完成官方引繼"]
         B["root 映像（此環境遊戲會黑屏）<br/>不開遊戲，只讀設定檔"]

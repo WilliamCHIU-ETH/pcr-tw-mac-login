@@ -4,8 +4,6 @@
 
 ![角色池匯出範例：三位角色整理名冊並匯出 JSON](assets/social-preview.jpg)
 
-<sub>角色池匯出範例主視覺 · 非官方 AI 輔助二創，素材說明見 [封面說明](assets/README.md)。</sub>
-
 ### 在 Mac 上取得台版公主連結的登入資料
 
 **在 Apple Silicon Mac 上，透過 BlueStacks Air 取出台版《超異域公主連結☆Re:Dive》的登入資料，並用它從 Mac 登入官方 API。**
@@ -173,3 +171,5 @@ BlueStacks Air 的 root 映像
 <sub>實驗與審查紀錄：[方法與實驗結果](docs/experiment.md) · [上游授權與檔案判定](docs/licensing.md) · [程式來源分析](docs/code-provenance.md) · [公開範圍](docs/publication.md)</sub><br/>
 <sub>本 repo 的文件、圖表、合成範例與檢查腳本以 [Apache License 2.0](LICENSE) 授權；不涵蓋上游專案的程式碼。</sub><br/>
 <sub>非官方實驗專案，與遊戲開發商、營運商及 BlueStacks 無隸屬關係。</sub>
+
+<sub>角色池匯出範例主視覺 · 非官方 AI 輔助二創，素材說明見 [封面說明](assets/README.md)。</sub>

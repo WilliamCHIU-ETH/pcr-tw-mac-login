@@ -12,7 +12,7 @@ EXPECTED = {
     'docs/publication.md', 'docs/upstream-license-audit.json', 'docs/code-provenance.md',
     'examples/roster.synthetic.json', 'tools/check_public_tree.py',
 }
-BINARY_SHA256 = {'assets/social-preview.jpg': '0cb4d776ec1e1de34d9fe30cca20a8718254c80e390e09fbf8b5a0d66412310b'}
+BINARY_SHA256 = {'assets/social-preview.jpg': '9ba728b8d776125a83793dc6996d65715b29f01238b3a2e0d5ea04810fbbe581'}
 
 PATTERNS = {
     'personal_absolute_path': re.compile('/' + r'(?:Users|home)/[^\s/]+/'),

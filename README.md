@@ -60,12 +60,12 @@ flowchart TB
 
 | 欄位 | 是什麼 | 登入時怎麼用 |
 | :--- | :--- | :--- |
-| `UDID` | 遊戲自己產生的安裝識別碼（不是 iPhone 硬體 UDID） | 證明是同一個安裝 |
-| `SHORT_UDID` | 較短的安裝識別值 | 放進每個請求的標頭 |
+| `UDID` | 遊戲自己產生的安裝識別碼（不是 iPhone 硬體 UDID） | 請求加密 IV 與 PARAM 簽章的材料 |
+| `SHORT_UDID` | 較短的安裝識別值 | 編碼後放進 `SHORT-UDID` 請求標頭 |
 | `VIEWER_ID` | 玩家帳號的內部 ID | 與伺服器編號合成完整玩家 ID |
-| `TW_SERVER_ID` | 帳號所在的台服編號 | 決定連線的伺服器，也參與合成玩家 ID |
+| `TW_SERVER_ID` | 帳號所在的台服編號 | 參與合成完整玩家 ID；連線主機由合成後 ID 的首字元決定 |
 
-設定檔位置、解碼與 ID 合成細節見[泳道圖與函數說明](docs/architecture.md)。
+設定檔位置、解碼與 ID 合成細節見[系統泳道圖與函數解釋](docs/architecture.md)。
 
 </details>
 
@@ -126,13 +126,13 @@ sequenceDiagram
     M->>A: 經 ADB 讀設定檔
     A-->>M: XML（只留在記憶體）
     M->>M: 解碼四個識別值
-    M->>S: check_agreement
-    M->>S: game_start
+    M->>S: check/check_agreement
+    M->>S: check/game_start
     M->>S: load/index
     S-->>M: 帳號資料（含角色池）
 ```
 
-每個函數如何分工、封包怎麼組成，見[完整泳道圖與函數說明](docs/architecture.md)。
+每個函數如何分工、封包怎麼組成，見[系統泳道圖與函數解釋](docs/architecture.md)。
 
 ## 實測環境
 

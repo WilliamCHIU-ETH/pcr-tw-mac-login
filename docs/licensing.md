@@ -6,7 +6,7 @@
 
 透過GitHub API讀取倉庫授權metadata、固定commit完整檔案樹（均未截斷），搜尋LICENSE／LICENCE／COPYING／NOTICE，並檢查該commit的README、Cargo.toml、package.json及pyproject.toml（如存在）。
 
-| 上游 | 使用的commit | 查核結果 | 本候選處理 |
+| 上游 | 使用的commit | 查核結果 | 本 repo 處理 |
 | --- | --- | --- | --- |
 | [kanna_connection_redive_2](https://github.com/SonderXiaoming/kanna_connection_redive_2) | `35723baae36f63edf6b20852bc8e56307d44d505` | API license=null；未找到授權檔或檢查範圍內的授權聲明 | 不放原碼、快照或其改寫登入客戶端 |
 | [pcr_login_helper](https://github.com/SonderXiaoming/pcr_login_helper) | `d1e6b1691a4da49cc2c9c5c20944cc4042cf4ddb` | 同上 | 不放Rust快照或依其改寫的解碼器 |
@@ -18,7 +18,7 @@ GitHub說明：沒有授權時，預設著作權規則仍適用；公開可讀�
 
 ## 檔案判定
 
-| 類別 | 公開候選 | 原因 |
+| 類別 | 是否公開 | 原因 |
 | --- | --- | --- |
 | 自行撰寫的去識別化方法、Mermaid圖與結果摘要 | 納入 | 描述實驗與方法，非複製上游程式實作 |
 | 合成JSON範例 | 納入 | 沒有真實帳號、憑證或角色池 |
@@ -41,4 +41,4 @@ GitHub說明：沒有授權時，預設著作權規則仍適用；公開可讀�
 
 ## 其他來源
 
-Magpie僅作README版面參考，沒有複製logo、截圖或原文內容。BlueStacks、遊戲與第三方套件均不隨此候選重新散布。
+BlueStacks、遊戲與第三方套件均不隨本 repo 重新散布。

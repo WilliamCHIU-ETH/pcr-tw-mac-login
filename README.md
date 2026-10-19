@@ -30,32 +30,36 @@
 
 ```mermaid
 flowchart TB
-    subgraph AIR["BlueStacks Air（同一份 Android 使用者資料）"]
-        B["Step 2：root 映像<br/>不開遊戲，只提供 root"]
-        A["Step 1：原始映像<br/>開遊戲，完成官方引繼"]
-        P[("playerprefs.xml<br/>遊戲的私有設定檔")]
-        B -.->|"root 讓私有檔可被讀取"| P
-        A -->|"引繼後寫入"| P
+    subgraph SETUP["首次設定／必要時更新憑證"]
+        A["BlueStacks Air<br/>官方遊戲已登入"]
+        R["暫時取得 root<br/>讀取指定 App 私有設定"]
+        I["Mac 匯入工具<br/>解碼並驗證必要欄位"]
+        K[("macOS 鑰匙圈<br/>保存最少必要憑證")]
+        A --> R --> I --> K
+        I --> Q["關閉 Air、還原正常遊玩環境"]
     end
-    subgraph MAC["Mac：Python 客戶端（資料只留在記憶體）"]
-        D["讀檔並解碼<br/>UDID · SHORT_UDID<br/>VIEWER_ID · TW_SERVER_ID"]
-        C["重現遊戲通訊格式<br/>登入官方 API"]
-        D --> C
+    subgraph DAILY["日常查詢｜不使用 BlueStacks、ADB 或 root"]
+        U["使用者要求更新"]
+        C["Mac 查詢工具"]
+        V{"鑰匙圈可讀<br/>且欄位驗證通過？"}
+        S["登入官方 API<br/>可能影響其他裝置的登入"]
+        F["驗證回應並保存<br/>白名單帳號快照"]
+        X["停止並回報原因<br/>不自動 root 或重試"]
+        U --> C --> V
+        K --> V
+        V -->|是| S
+        V -->|否| X
+        S -->|查詢成功| F
+        S -->|認證或查詢失敗| X
     end
-    subgraph SRV["官方伺服器"]
-        F["角色池<br/>（本次已驗證）"]
-        G["其他帳號資料<br/>（未驗證）"]
-    end
-    P -->|"經 ADB 通道拉回 Mac"| D
-    C -->|"呼叫 API"| F
-    C -.-> G
 ```
 
-對照上圖：
+**實測完成（2026-10-19）：必要憑證已匯入鑰匙圈並核對讀回；BlueStacks 關閉、ADB 連接埠停止後，Mac 查詢成功。原始啟動映像已還原並核對 SHA-256，還原後鑰匙圈仍可讀。**
 
-- **為什麼要切換映像**：此環境在 root 映像下開遊戲會黑屏，所以讓原始映像負責引繼、root 映像只負責讀檔。兩者共用同一份使用者資料，也不必先下載 12.59 GB 的追加素材。
-- **登入資料是什麼**：從 `playerprefs.xml` 解碼出的四個遊戲識別值，不是 Apple／Facebook 帳密。**但拿到它就能登入這個帳號，不要提交到 GitHub，也不要交給任何人。**
-- **它能做什麼**：Mac 客戶端用它登入後，就能呼叫遊戲 API。本次讀取了 90 位角色；其他 API 可走同一個登入流程，尚未驗證。
+- **root 用在哪裡**：只在首次取得或更新遊戲私有設定時需要；日常查詢改從 macOS 鑰匙圈取得必要欄位。憑證失效時可能需要重新匯入，「首次設定」不代表永久有效。
+- **為什麼切換映像**：原始實驗在 root 映像下開遊戲會黑屏，因此讓正常映像負責遊玩、root 映像只負責讀檔。匯入後已還原原始啟動映像，實測狀態見[實驗紀錄](docs/experiment.md)。
+- **登入資料是什麼**：四個遊戲識別值，不是 Apple／Facebook 帳密，但具有帳號登入能力。鑰匙圈之外不另存憑證副本，完整設定、識別值、封包及 headers 不進成果檔或公開 repo。
+- **分開環境不等於可同時登入**：查詢工具登入官方 API 仍可能讓原本遊戲連線失效。讀取權限、憑證有效性與伺服器登入成功是三個不同的驗證層次。
 
 <details>
 <summary><strong>四個欄位各是什麼</strong></summary>
@@ -108,46 +112,52 @@ flowchart TB
 
 ## 完整流程
 
-運作原理講資料怎麼流，這張泳道圖依時間順序列出每一步。
+此圖區分首次匯入與日常查詢；使用者在需要更新時執行，不背景輪詢。
 
 ```mermaid
 sequenceDiagram
     actor U as 你
     participant A as BlueStacks Air
-    participant M as Mac 客戶端
+    participant I as Mac 匯入工具
+    participant K as macOS 鑰匙圈
+    participant M as Mac 查詢工具
     participant S as 官方伺服器
 
-    Note over U,A: Step 1：原始映像
-    U->>A: 開遊戲，輸入引繼資訊
-    A->>S: 官方引繼
-    S-->>A: 引繼成功
-    A->>A: 寫入 playerprefs.xml
-    U->>A: 取消追加下載，關閉 Air
-    Note over U,A: Step 2：root 映像（不開遊戲）
-    U->>A: 開啟 ADB 與 root
-    M->>A: 經 ADB 讀設定檔
-    A-->>M: XML（只留在記憶體）
-    M->>M: 解碼四個識別值
-    M->>S: check/check_agreement
-    M->>S: check/game_start
-    M->>S: load/index
-    S-->>M: 帳號資料（含角色池）
+    rect rgb(240, 245, 255)
+        Note over U,K: 首次設定／憑證失效後重設
+        U->>A: 關閉遊戲，取得暫時 root
+        I->>A: 經 ADB 讀指定私有設定
+        A-->>I: XML（僅留記憶體）
+        I->>I: 解碼並驗證必要欄位
+        I->>K: 保存必要憑證並讀回核對
+        U->>A: 關閉 Air、還原原始映像並校驗
+    end
+    rect rgb(240, 255, 245)
+        Note over U,S: 日常查詢（已驗證不依賴 BlueStacks）
+        U->>M: 要求更新快照
+        M->>K: 讀取必要憑證
+        K-->>M: 憑證／存取錯誤
+        M->>M: 檢查欄位；失敗即停止
+        M->>S: 登入及查詢（可能頂號）
+        S-->>M: 帳號資料／錯誤
+        M->>M: 驗證成功後保存白名單快照
+    end
 ```
 
-每個函數如何分工、封包怎麼組成，見[系統泳道圖與函數解釋](docs/architecture.md)。
+函數分工與歷史原型見[系統泳道圖與函數解釋](docs/architecture.md)。
 
 ## 實測環境
 
-| 項目 | 本次實測 |
+| 項目 | 2026-10-19 憑證分離實測 |
 | :--- | :--- |
 | Mac | Apple Silicon（M2） |
 | macOS | 27.0.1 |
 | BlueStacks Air | 5.21.790.7505 |
 | Android | 13，arm64-v8a |
 | 台版遊戲 | 5.9.0（versionCode 113） |
-| 結果 | 三個 API 請求皆 HTTP 200、result_code=1 |
+| 結果 | 四個 API 請求皆 HTTP 200、result_code=1 |
 
-這是單一環境、單一帳號的成功紀錄，版本邊界與未驗證項目見[方法與實驗結果](docs/experiment.md)。
+日常查詢在套件初始化後禁止建立子程序，並將 ADB 路徑設為不存在的位置；成功查詢沒有啟動 BlueStacks 或 ADB。這是單一環境、單一帳號的成功紀錄，版本邊界與未驗證項目見[方法與實驗結果](docs/experiment.md)。
 
 ## 致謝
 
